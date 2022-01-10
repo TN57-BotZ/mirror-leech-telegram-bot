@@ -43,27 +43,27 @@ def stats(update, context):
     mem_t = get_readable_file_size(memory.total)
     mem_a = get_readable_file_size(memory.available)
     mem_u = get_readable_file_size(memory.used)
-    stats = f'<b>Bot Uptime:</b> {currentTime}\n\n'\
-            f'<b>Total Disk Space:</b> {total}\n'\
-            f'<b>Used:</b> {used} | <b>Free:</b> {free}\n\n'\
-            f'<b>Upload:</b> {sent}\n'\
-            f'<b>Download:</b> {recv}\n\n'\
-            f'<b>CPU:</b> {cpuUsage}%\n'\
-            f'<b>RAM:</b> {mem_p}%\n'\
-            f'<b>DISK:</b> {disk}%\n\n'\
-            f'<b>Physical Cores:</b> {p_core}\n'\
-            f'<b>Total Cores:</b> {t_core}\n\n'\
-            f'<b>SWAP:</b> {swap_t} | <b>Used:</b> {swap_p}%\n'\
-            f'<b>Memory Total:</b> {mem_t}\n'\
-            f'<b>Memory Free:</b> {mem_a}\n'\
-            f'<b>Memory Used:</b> {mem_u}\n'
+    stats = f'<b>Bot Uptime : {currentTime}</b>\n\n'\
+            f'<b>Total Disk Space : {total}</b>\n'\
+            f'<b>Used : {used} | Free : {free}</b>\n\n'\
+            f'<b>Upload : {sent}</b>\n'\
+            f'<b>Download : {recv}</b>\n\n'\
+            f'<b>CPU : {cpuUsage}%</b>\n'\
+            f'<b>RAM : {mem_p}%</b>\n'\
+            f'<b>DISK : {disk}%</b>\n\n'\
+            f'<b>Physical Cores : {p_core}</b>\n'\
+            f'<b>Total Cores : {t_core}</b>\n\n'\
+            f'<b>SWAP : {swap_t} || <b>Used : {swap_p}%</b>\n'\
+            f'<b>Memory Total : {mem_t}</b>\n'\
+            f'<b>Memory Free : {mem_a}</b>\n'\
+            f'<b>Memory Used : {mem_u}</b>\n'
     sendMessage(stats, context.bot, update)
 
 
 def start(update, context):
     buttons = button_build.ButtonMaker()
-    buttons.buildbutton("Repo", "https://www.github.com/anasty17/mirror-leech-telegram-bot")
-    buttons.buildbutton("Report Group", "https://t.me/+MwgSi5vmQEA2N2Vk")
+    buttons.buildbutton("Kristy Cloud", "https://telegram.dog/KristyCloud")
+    buttons.buildbutton("Log Channel", "https://t.me/KristyDump")
     reply_markup = InlineKeyboardMarkup(buttons.build_menu(2))
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''
@@ -72,7 +72,7 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
 '''
         sendMarkup(start_string, context.bot, update, reply_markup)
     else:
-        sendMarkup('Not Authorized user, deploy your own mirror-leech bot', context.bot, update, reply_markup)
+        sendMarkup('Your A Unauthorized Person, Use Me In My Groups Click Below 👇', context.bot, update, reply_markup)
 
 def restart(update, context):
     restart_message = sendMessage("Restarting...", context.bot, update)
@@ -173,7 +173,7 @@ help_string_telegraph = f'''<br>
 '''
 
 help = telegraph.create_page(
-        title='Mirror-Leech-Bot Help',
+        title='How To Use Mirror Bots !?',
         content=help_string_telegraph,
     )["path"]
 
