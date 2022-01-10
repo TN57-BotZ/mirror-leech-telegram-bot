@@ -1,5 +1,8 @@
 import logging
 import os
+import threading
+import time
+import subprocess
 import requests
 import socket
 import faulthandler
@@ -8,9 +11,6 @@ import json
 import qbittorrentapi as qba
 import telegram.ext as tg
 
-from subprocess import Popen, run
-from time import sleep, time
-from threading import Thread, Lock
 from pyrogram import Client
 from dotenv import load_dotenv
 
@@ -18,7 +18,7 @@ faulthandler.enable()
 
 socket.setdefaulttimeout(600)
 
-botStartTime = time()
+botStartTime = time.time()
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     handlers=[logging.FileHandler('log.txt'), logging.StreamHandler()],
@@ -55,16 +55,16 @@ except KeyError:
     SERVER_PORT = 80
 
 PORT = os.environ.get('PORT', SERVER_PORT)
-web = Popen([f"gunicorn wserver:start_server --bind 0.0.0.0:{PORT} --worker-class aiohttp.GunicornWebWorker"], shell=True)
-alive = Popen(["python3", "alive.py"])
-nox = Popen(["qbittorrent-nox", "--profile=."])
+web = subprocess.Popen([f"gunicorn wserver:start_server --bind 0.0.0.0:{PORT} --worker-class aiohttp.GunicornWebWorker"], shell=True)
+alive = subprocess.Popen(["python3", "alive.py"])
+nox = subprocess.Popen(["qbittorrent-nox", "--profile=."])
 if not os.path.exists('.netrc'):
-    run(["touch", ".netrc"])
-run(["cp", ".netrc", "/root/.netrc"])
-run(["chmod", "600", ".netrc"])
-run(["chmod", "+x", "aria.sh"])
-run(["./aria.sh"], shell=True)
-sleep(0.5)
+    subprocess.run(["touch", ".netrc"])
+subprocess.run(["cp", ".netrc", "/root/.netrc"])
+subprocess.run(["chmod", "600", ".netrc"])
+subprocess.run(["chmod", "+x", "aria.sh"])
+subprocess.run(["./aria.sh"], shell=True)
+time.sleep(0.5)
 
 Interval = []
 DRIVES_NAMES = []
@@ -101,18 +101,19 @@ get_client().application.set_preferences({"add_trackers":f"{trackerslist}"})
 DOWNLOAD_DIR = None
 BOT_TOKEN = None
 
-download_dict_lock = Lock()
-status_reply_dict_lock = Lock()
+download_dict_lock = threading.Lock()
+status_reply_dict_lock = threading.Lock()
+rss_dict_lock = threading.Lock()
 # Key: update.effective_chat.id
 # Value: telegram.Message
 status_reply_dict = {}
 # Key: update.message.message_id
 # Value: An object of Status
 download_dict = {}
+# Stores list of users and chats the bot is authorized to use in
+rss_dict = {}
 # key: rss_title
 # value: [rss_feed, last_link, last_title]
-rss_dict = {}
-
 AUTHORIZED_CHATS = set()
 SUDO_USERS = set()
 AS_DOC_USERS = set()
@@ -152,6 +153,7 @@ try:
     AUTO_DELETE_MESSAGE_DURATION = int(getConfig('AUTO_DELETE_MESSAGE_DURATION'))
     TELEGRAM_API = getConfig('TELEGRAM_API')
     TELEGRAM_HASH = getConfig('TELEGRAM_HASH')
+    LOG_CHANNEL = int(getConfig('LOG_CHANNEL'))
 except KeyError as e:
     LOGGER.error("One or more env variables missing! Exiting now")
     exit(1)
@@ -176,9 +178,9 @@ def aria2c_init():
         logging.info("Initializing Aria2c")
         link = "https://releases.ubuntu.com/21.10/ubuntu-21.10-desktop-amd64.iso.torrent"
         aria2.add_uris([link], {'dir': DOWNLOAD_DIR})
-        sleep(3)
+        time.sleep(3)
         downloads = aria2.get_downloads()
-        sleep(30)
+        time.sleep(30)
         for download in downloads:
             aria2.remove([download], force=True, files=True)
     except Exception as e:
@@ -186,8 +188,8 @@ def aria2c_init():
         pass
 
 if not os.path.isfile(".restartmsg"):
-    Thread(target=aria2c_init).start()
-    sleep(1)
+    threading.Thread(target=aria2c_init).start()
+    time.sleep(1)
 
 try:
     DB_URI = getConfig('DATABASE_URL')
@@ -447,7 +449,7 @@ try:
         except Exception as e:
             logging.error(f"ACCOUNTS_ZIP_URL: {e}")
             raise KeyError
-        run(["unzip", "-q", "-o", "accounts.zip"])
+        subprocess.run(["unzip", "-q", "-o", "accounts.zip"])
         os.remove("accounts.zip")
 except KeyError:
     pass
