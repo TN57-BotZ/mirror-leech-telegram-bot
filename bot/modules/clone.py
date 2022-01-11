@@ -89,10 +89,10 @@ def cloneNode(update, context):
             sendMessage(f"{tag} {result}", context.bot, update)
         else:
             log_msg = f"<b>═══════ @KristyCloud ═══════</b>\n\n"
-            logmsg = sendLog(log_msg + result , context.bot, update, button)
+            logmsg = sendLog(log_msg + result, context.bot, update, button)
             if logmsg:
                 log_msg = f"\n\n<b>Hello {tag}\n\nYour File has been Successfully Uploaded, Click Below Button to get Download Links.👇</b>"
-                sendMarkup(log_msg, context.bot, update, InlineKeyboardMarkup([[InlineKeyboardButton(text="Click Here 🔗", url=logmsg.link)]]))
+                sendMarkup(log_msg + result, context.bot, update, InlineKeyboardMarkup([[InlineKeyboardButton(text="Click Here 🔗", url=logmsg.link)]]))
         if gdtot_link:
             gd.deletefile(link)
     else:
