@@ -156,7 +156,7 @@ class MirrorListener:
                         fs_utils.split(f_path, f_size, filee, dirpath, TG_SPLIT_SIZE)
                         os.remove(f_path)
         if self.isLeech:
-            LOGGER.info(f"Leech Name: {up_name}")
+            LOGGER.info(f"Leech Name: @KaipullaVadiveluOffl - {up_name}")
             tg = pyrogramEngine.TgUploader(up_name, self)
             tg_upload_status = TgUploadStatus(tg, size, gid, self)
             with download_dict_lock:
@@ -164,7 +164,7 @@ class MirrorListener:
             update_all_messages()
             tg.upload()
         else:
-            LOGGER.info(f"Upload Name: {up_name}")
+            LOGGER.info(f"Upload Name: @KaipullaVadiveluOffl - {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
             upload_status = UploadStatus(drive, size, gid, self)
             with download_dict_lock:
@@ -207,7 +207,7 @@ class MirrorListener:
                 else:
                     update_all_messages()
             count = len(files)
-            msg = f'<b>Name: </b><code>{link}</code>\n\n'
+            msg = f'<b>Name: </b><code>@KaipullaVadiveluOffl - {link}</code>\n\n'
             msg += f'<b>Size: </b>{bot_utils.get_readable_file_size(size)}\n'
             msg += f'<b>Total Files: </b>{count}'
             if typ != 0:
