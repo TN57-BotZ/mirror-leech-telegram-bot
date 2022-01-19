@@ -168,7 +168,7 @@ class GoogleDriveHelper:
         # File body description
         file_metadata = {
             'name': file_name,
-            'description': 'Uploaded by Mirror-leech-telegram-bot',
+            'description': 'Uploaded by TN57 Mirrors',
             'mimeType': mime_type,
         }
         if parent_id is not None:
@@ -374,19 +374,19 @@ class GoogleDriveHelper:
                 msg += f'\n<b>Files : {self.__total_files}</b>'
                 buttons = button_build.ButtonMaker()
                 durl = short_url(durl)
-                buttons.buildbutton("☁️ Drive Link", durl)
+                buttons.buildbutton("🌩️Drive Link🌩️", durl)
                 if INDEX_URL is not None:
                     url_path = requests.utils.quote(f'{meta.get("name")}')
                     url = f'{INDEX_URL}/{url_path}/'
                     url = short_url(url)
-                    buttons.buildbutton("⚡ Index Link", url)
+                    buttons.buildbutton("⚡Index Link⚡", url)
             else:
                 file = self.copyFile(meta.get('id'), parent_id)
                 msg += f'<b>Name : {file.get("name")}</b>'
                 durl = self.__G_DRIVE_BASE_DOWNLOAD_URL.format(file.get("id"))
                 buttons = button_build.ButtonMaker()
                 durl = short_url(durl)
-                buttons.buildbutton("☁️ Drive Link", durl)
+                buttons.buildbutton("🌩️Drive Link🌩️", durl)
                 if mime_type is None:
                     mime_type = 'File'
                 msg += f'\n\n<b>Size : {get_readable_file_size(int(meta.get("size", 0)))}</b>'
@@ -395,7 +395,7 @@ class GoogleDriveHelper:
                     url_path = requests.utils.quote(f'{file.get("name")}')
                     url = f'{INDEX_URL}/{url_path}'
                     url = short_url(url)
-                    buttons.buildbutton("⚡ Index Link", url)
+                    buttons.buildbutton("⚡Index Link⚡", url)
                     if VIEW_LINK:
                         urls = f'{INDEX_URL}/{url_path}?a=view'
                         urls = short_url(urls)
@@ -546,7 +546,7 @@ class GoogleDriveHelper:
                     nxt_page += 1
             telegraph.edit_page(
                 path = self.path[prev_page],
-                title = 'Mirror-Leech-Bot Drive Search',
+                title = 'Mirror-Bot Drive Search',
                 content=content
             )
         return
